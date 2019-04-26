@@ -25,8 +25,8 @@ public class ObiewController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/feed")
-    public ResponseEntity<List<Obiew>> getObiews(User user) {
+    @PostMapping("/feed")
+    public ResponseEntity<List<Obiew>> getObiews(@RequestBody User user) {
         user = userRepository.findByUserId(user.getUserId());
         List<User> followingList = user.getFollowingList();
         List<Obiew> feeds = new LinkedList<>();
