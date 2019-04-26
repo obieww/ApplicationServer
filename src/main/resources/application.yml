@@ -1,6 +1,6 @@
 spring:
   application:
-    name: application_server
+    name: application-server
 
 server:
-  port: 8090
+  port: ${SERVER_PORT}
