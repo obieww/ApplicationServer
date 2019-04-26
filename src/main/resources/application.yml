@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: application_server
+
+server:
+  port: 8090
