@@ -31,6 +31,7 @@ public class Obiew {
     @JoinColumn(name = "parentId")
     @JsonBackReference("commentList")
     private Obiew parent;
+    private String username;
 
     public Obiew() {}
 
@@ -94,6 +95,14 @@ public class Obiew {
 
     public void setParent(Obiew parent) {
         this.parent = parent;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override

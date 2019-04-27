@@ -60,6 +60,7 @@ public class ObiewController {
     public ResponseEntity<Obiew> add(@RequestBody Obiew obiew) {
         User user = userRepository.findByUserId(obiew.getUser().getUserId());
         if (user != null) {
+            obiew.setUsername(user.getUsername());
             obiew = obiewRepository.save(obiew);
             user.addObiew(obiew);
             user = userRepository.save(user);
@@ -72,7 +73,9 @@ public class ObiewController {
     @PostMapping("/comment")
     public ResponseEntity<Obiew> comment(@RequestBody Obiew comment) {
         Obiew obiew = obiewRepository.findByObiewId(comment.getParent().getObiewId());
+        User user = userRepository.findByUserId(comment.getUser().getUserId());
         if (obiew != null) {
+            obiew.setUsername(user.getUsername());
             comment = obiewRepository.save(comment);
             obiew.addComment(comment);
             obiew = obiewRepository.save(obiew);
