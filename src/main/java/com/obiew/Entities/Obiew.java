@@ -18,18 +18,18 @@ public class Obiew {
     private String obiewId;
     @ManyToOne
     @JoinColumn(name = "userId")
-    @JsonIgnoreProperties("ObiewList")
+    @JsonBackReference("obiewList")
     private User user;
     private String content;
-    @OneToMany(mappedBy = "obiew", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("obiew")
+    @OneToMany(mappedBy = "obiew")
+    @JsonManagedReference("likeList")
     private List<Like> likeList;
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("parent")
+    @OneToMany(mappedBy = "parent")
+    @JsonManagedReference("commentList")
     private List<Obiew> commentList;
     @ManyToOne
     @JoinColumn(name = "parentId")
-    @JsonIgnoreProperties("commentList")
+    @JsonBackReference("commentList")
     private Obiew parent;
 
     public Obiew() {}
@@ -110,5 +110,15 @@ public class Obiew {
     @Override
     public int hashCode() {
         return Objects.hash(getObiewId(), getContent(), getLikeList(), getCommentList());
+    }
+
+    @Override
+    public String toString() {
+        return "Obiew{" +
+                "obiewId='" + obiewId + '\'' +
+                ", content='" + content + '\'' +
+                ", likeList=" + likeList +
+                ", commentList=" + commentList +
+                '}';
     }
 }

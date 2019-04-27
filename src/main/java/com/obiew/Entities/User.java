@@ -20,8 +20,8 @@ public class User {
     private String userId;
     private String username;
     private String password;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("user")
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference("obiewList")
     private List<Obiew> obiewList;
     @ManyToMany
     @JoinTable(
@@ -30,7 +30,6 @@ public class User {
     )
     private List<User> followingList;
     @ManyToMany(mappedBy = "followingList")
-    @JsonIgnore
     private List<User> followerList;
 
     public User() {
@@ -45,7 +44,7 @@ public class User {
     }
 
     public void addObiew(Obiew obiew) {
-        obiewList.add(obiew);
+        getObiewList().add(obiew);
         obiew.setUser(this);
     }
 
@@ -94,7 +93,6 @@ public class User {
         this.followingList = followingList;
     }
 
-    @JsonIgnore
     public List<User> getFollowerList() {
         return followerList;
     }
