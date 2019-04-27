@@ -20,6 +20,9 @@ public class Like {
     @JoinColumn(name = "obiewId")
     @JsonBackReference("likeList")
     private Obiew obiew;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
 
     public Like() {}
 
@@ -37,6 +40,14 @@ public class Like {
 
     public void setObiew(Obiew obiew) {
         this.obiew = obiew;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.obiew.Controllers;
 
+import com.obiew.Entities.Like;
 import com.obiew.Entities.Obiew;
 import com.obiew.Entities.User;
+import com.obiew.Repositories.LikeRepository;
 import com.obiew.Repositories.ObiewRepository;
 import com.obiew.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +20,13 @@ import java.util.List;
 public class ObiewController {
     private ObiewRepository obiewRepository;
     private UserRepository userRepository;
+    private LikeRepository likeRepository;
 
     @Autowired
-    public ObiewController(ObiewRepository obiewRepository, UserRepository userRepository) {
+    public ObiewController(ObiewRepository obiewRepository, UserRepository userRepository, LikeRepository likeRepository) {
         this.obiewRepository = obiewRepository;
         this.userRepository = userRepository;
+        this.likeRepository = likeRepository;
     }
 
     @PostMapping("/feed")
@@ -30,7 +34,7 @@ public class ObiewController {
         user = userRepository.findByUserId(user.getUserId());
         List<User> followingList = user.getFollowingList();
         List<Obiew> feeds = new LinkedList<>();
-        for(User following: followingList) {
+        for (User following : followingList) {
             feeds.addAll(following.getObiewList());
         }
         return new ResponseEntity<>(feeds, HttpStatus.OK);
@@ -38,7 +42,7 @@ public class ObiewController {
 
     @GetMapping("/randomfeed")
     public ResponseEntity<List<Obiew>> getRandom() {
-        List<Obiew> obiewList = (List<Obiew>)obiewRepository.findAll();
+        List<Obiew> obiewList = (List<Obiew>) obiewRepository.findAll();
         return new ResponseEntity<>(obiewList, HttpStatus.OK);
     }
 
@@ -55,7 +59,7 @@ public class ObiewController {
     @PostMapping("/post")
     public ResponseEntity<Obiew> add(@RequestBody Obiew obiew) {
         User user = userRepository.findByUserId(obiew.getUser().getUserId());
-        if(user != null) {
+        if (user != null) {
             obiew = obiewRepository.save(obiew);
             user.addObiew(obiew);
             user = userRepository.save(user);
@@ -68,7 +72,7 @@ public class ObiewController {
     @PostMapping("/comment")
     public ResponseEntity<Obiew> comment(@RequestBody Obiew comment) {
         Obiew obiew = obiewRepository.findByObiewId(comment.getParent().getObiewId());
-        if(obiew != null) {
+        if (obiew != null) {
             comment = obiewRepository.save(comment);
             obiew.addComment(comment);
             obiew = obiewRepository.save(obiew);
@@ -86,6 +90,19 @@ public class ObiewController {
             return new ResponseEntity<>(true, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(false, HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @PostMapping("/like")
+    public ResponseEntity<Like> like(@RequestBody Like like) {
+        Obiew obiew = obiewRepository.findByObiewId(like.getObiew().getObiewId());
+        if (obiew != null) {
+            like = likeRepository.save(like);
+            obiew.addLike(like);
+            obiew = obiewRepository.save(obiew);
+            return new ResponseEntity<>(like, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
         }
     }
 }

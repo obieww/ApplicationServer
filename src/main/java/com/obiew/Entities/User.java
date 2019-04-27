@@ -23,6 +23,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     @JsonManagedReference("obiewList")
     private List<Obiew> obiewList;
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Like> likeList;
     @ManyToMany
     @JoinTable(
             joinColumns = @JoinColumn(name = "followingId"),
@@ -101,6 +104,13 @@ public class User {
         this.followerList = followerList;
     }
 
+    public List<Like> getLikeList() {
+        return likeList;
+    }
+
+    public void setLikeList(List<Like> likeList) {
+        this.likeList = likeList;
+    }
 
     @Override
     public boolean equals(Object o) {
