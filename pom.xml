@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.obiew</groupId>
-    <artifactId>application_server</artifactId>
+    <artifactId>application_server_grpc</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>application_server</name>
+    <name>application_server_grpc</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
