@@ -20,11 +20,11 @@ public class User {
     private String userId;
     private String username;
     private String password;
-    @OneToMany(mappedBy = "user")
-    @JsonManagedReference("obiewList")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("user")
     private List<Obiew> obiewList;
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("user")
     private List<Like> likeList;
     @ManyToMany
     @JoinTable(

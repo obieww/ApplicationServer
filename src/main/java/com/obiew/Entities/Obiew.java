@@ -18,20 +18,19 @@ public class Obiew {
     private String obiewId;
     @ManyToOne
     @JoinColumn(name = "userId")
-    @JsonBackReference("obiewList")
+    @JsonIgnoreProperties("obiewList")
     private User user;
     private String content;
-    @OneToMany(mappedBy = "obiew")
-    @JsonManagedReference("likeList")
+    @OneToMany(mappedBy = "obiew", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("user")
     private List<Like> likeList;
-    @OneToMany(mappedBy = "parent")
-    @JsonManagedReference("commentList")
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("parent")
     private List<Obiew> commentList;
     @ManyToOne
     @JoinColumn(name = "parentId")
-    @JsonBackReference("commentList")
+    @JsonIgnoreProperties("commentList")
     private Obiew parent;
-    private String username;
 
     public Obiew() {}
 
@@ -95,14 +94,6 @@ public class Obiew {
 
     public void setParent(Obiew parent) {
         this.parent = parent;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     @Override
